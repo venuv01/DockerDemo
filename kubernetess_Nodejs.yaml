@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejsdeployment
+  labels:
+    app: nodejsdeployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejsdeployment
+  template:
+    metadata:
+      labels:
+        app: nodejsdeployment
+    spec:
+      containers:
+        - name: nodejsdeployment
+          image: myshivaakscluter.azurecr.io/mynodejsappdevops
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejsdeployment-loadbalancer-service
+  labels:
+    app: nodejsdeployment
+spec:
+  type: LoadBalancer
+  selector:
+    app: nodejsdeployment
+  ports:
+    - port: 80
+      targetPort: 80
